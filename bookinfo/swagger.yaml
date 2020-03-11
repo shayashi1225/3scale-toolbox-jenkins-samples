@@ -1,0 +1,253 @@
+swagger: '2.0'
+info:
+    title: BookInfo API
+    description: This is the API of the Istio BookInfo sample application.
+    termsOfService: 'https://istio.io/'
+    license:
+        name: Apache 2.0
+        url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    version: 1.0.0
+    x-status: created
+basePath: /api/v1
+paths:
+    /products:
+        get:
+            tags:
+                - product
+            summary: List all products
+            description: List all products available in the application with a minimum amount of information.
+            operationId: getProducts
+            consumes:
+                - application/json
+            produces:
+                - application/json
+            responses:
+                '200':
+                    description: successful operation
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/definitions/Product'
+    '/products/{id}':
+        get:
+            tags:
+                - product
+            summary: Get individual product
+            description: Get detailed information about an individual product with the given id.
+            operationId: getProduct
+            consumes:
+                - application/json
+            produces:
+                - application/json
+            parameters:
+                -
+                    name: id
+                    in: path
+                    description: Product id
+                    required: true
+                    type: integer
+                    format: int32
+            responses:
+                '200':
+                    description: successful operation
+                    schema:
+                        $ref: '#/definitions/ProductDetails'
+                '400':
+                    description: Invalid product id
+    '/products/{id}/reviews':
+        get:
+            tags:
+                - review
+            summary: Get reviews for a product
+            description: 'Get reviews for a product, including review text and possibly ratings information.'
+            operationId: getProductReviews
+            consumes:
+                - application/json
+            produces:
+                - application/json
+            parameters:
+                -
+                    name: id
+                    in: path
+                    description: Product id
+                    required: true
+                    type: integer
+                    format: int32
+            responses:
+                '200':
+                    description: successful operation
+                    schema:
+                        $ref: '#/definitions/ProductReviews'
+                '400':
+                    description: Invalid product id
+    '/products/{id}/ratings':
+        get:
+            tags:
+                - rating
+            summary: Get ratings for a product
+            description: 'Get ratings for a product, including stars and their color.'
+            operationId: getProductRatings
+            consumes:
+                - application/json
+            produces:
+                - application/json
+            parameters:
+                -
+                    name: id
+                    in: path
+                    description: Product id
+                    required: true
+                    type: integer
+                    format: int32
+            responses:
+                '200':
+                    description: successful operation
+                    schema:
+                        $ref: '#/definitions/ProductRatings'
+                '400':
+                    description: Invalid product id
+definitions:
+    Product:
+        description: Basic information about a product
+        required:
+            - id
+            - title
+            - descriptionHtml
+        type: object
+        properties:
+            id:
+                format: int32
+                description: Product id
+                type: integer
+            title:
+                description: Title of the book
+                type: string
+            descriptionHtml:
+                description: Description of the book - may contain HTML tags
+                type: string
+    ProductDetails:
+        description: Detailed information about a product
+        required:
+            - id
+            - publisher
+            - language
+            - author
+            - ISBN-10
+            - ISBN-13
+            - year
+            - type
+            - pages
+        type: object
+        properties:
+            id:
+                format: int32
+                description: Product id
+                type: integer
+            publisher:
+                description: Publisher of the book
+                type: string
+            language:
+                description: Language of the book
+                type: string
+            author:
+                description: Author of the book
+                type: string
+            ISBN-10:
+                description: ISBN-10 of the book
+                type: string
+            ISBN-13:
+                description: ISBN-13 of the book
+                type: string
+            year:
+                format: int32
+                description: Year the book was first published in
+                type: integer
+            type:
+                description: Type of the book
+                enum:
+                    - paperback
+                    - hardcover
+                type: string
+            pages:
+                format: int32
+                description: Number of pages of the book
+                type: integer
+    ProductReviews:
+        description: Object containing reviews for a product
+        required:
+            - id
+            - reviews
+        type: object
+        properties:
+            id:
+                format: int32
+                description: Product id
+                type: integer
+            reviews:
+                description: List of reviews
+                type: array
+                items:
+                    $ref: '#/definitions/Review'
+    Review:
+        description: Review of a product
+        required:
+            - reviewer
+            - text
+        type: object
+        properties:
+            reviewer:
+                description: Name of the reviewer
+                type: string
+            text:
+                description: Review text
+                type: string
+            rating:
+                $ref: '#/definitions/Rating'
+    Rating:
+        description: Rating of a product
+        required:
+            - stars
+            - color
+        type: object
+        properties:
+            stars:
+                format: int32
+                description: Number of stars
+                maximum: 5
+                minimum: 1
+                type: integer
+            color:
+                description: Color in which stars should be displayed
+                enum:
+                    - red
+                    - black
+                type: string
+    ProductRatings:
+        description: Object containing ratings of a product
+        required:
+            - id
+            - ratings
+        type: object
+        properties:
+            id:
+                format: int32
+                description: Product id
+                type: integer
+            ratings:
+                description: 'A hashmap where keys are reviewer names, values are number of stars'
+                type: object
+                additionalProperties:
+                    type: string
+tags:
+    -
+        name: product
+        description: Information about a product (in this case a book)
+    -
+        name: review
+        description: Review information for a product
+    -
+        name: rating
+        description: Rating information for a product
+externalDocs:
+    description: Learn more about the Istio BookInfo application
+    url: 'https://istio.io/docs/samples/bookinfo.html'
