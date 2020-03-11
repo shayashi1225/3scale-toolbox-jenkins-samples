@@ -16,7 +16,10 @@ node() {
     service = toolbox.prepareThreescaleService(
         openapi: [filename: "bookinfo/swagger.yaml", systemName: "Bookinfo API"],
         environment: [ baseSystemName: "bookinfo",
-                       privateBaseUrl: params.PRIVATE_BASE_URL ],
+                       privateBaseUrl: params.PRIVATE_BASE_URL,
+                       publicProductionWildcardDomain: "apicast-stg-3scale-apicast.apps.cluster-41d8.41d8.sandbox753.opentlc.com", 
+                       publicStagingWildcardDomain: "apicast-pro-3scale-apicast.apps.cluster-41d8.41d8.sandbox753.opentlc.com"
+                        ],
         toolbox: [ openshiftProject: params.NAMESPACE,
                    destination: params.TARGET_INSTANCE,
                    image: "quay.io/redhat/3scale-toolbox:master", // TODO: remove me once the final image is released
