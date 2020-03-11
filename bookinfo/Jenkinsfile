@@ -17,8 +17,8 @@ node() {
         openapi: [filename: "bookinfo/swagger.yaml", systemName: "Bookinfo API"],
         environment: [ baseSystemName: "bookinfo",
                        privateBaseUrl: params.PRIVATE_BASE_URL,
-                       stagingPublicBaseURL: "http://apicast-stg-3scale-apicast.apps.cluster-41d8.41d8.sandbox753.opentlc.com:80", 
-                       productionPublicBaseURL: "http://apicast-pro-3scale-apicast.apps.cluster-41d8.41d8.sandbox753.opentlc.com:80"
+                       stagingPublicBaseURL: "http://apicast-stg-3scale-apicast.apps.cluster-41d8.41d8.sandbox753.opentlc.com", 
+                       productionPublicBaseURL: "http://apicast-pro-3scale-apicast.apps.cluster-41d8.41d8.sandbox753.opentlc.com"
                         ],
         toolbox: [ openshiftProject: params.NAMESPACE,
                    destination: params.TARGET_INSTANCE,
