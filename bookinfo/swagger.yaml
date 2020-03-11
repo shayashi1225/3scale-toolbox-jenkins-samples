@@ -6,9 +6,8 @@ info:
     license:
         name: Apache 2.0
         url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-    version: 1.0.0
-    x-status: created
-basePath: /api/v1
+    version: 2.0.0
+basePath: /api/v2
 paths:
     /products:
         get:
@@ -106,6 +105,7 @@ paths:
                         $ref: '#/definitions/ProductRatings'
                 '400':
                     description: Invalid product id
+    '/products/{id}/recommand': {}
 definitions:
     Product:
         description: Basic information about a product
